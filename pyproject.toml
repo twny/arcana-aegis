@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "arcana-aegis"
+version = "0.1.0"
+description = ""
+authors = ["tawny <hitawnie@gmail.com>"]
+license = "UNLICENSED"
+readme = "README.md"
+packages = [{include = "arcana_aegis"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
