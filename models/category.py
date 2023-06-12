@@ -1,13 +1,7 @@
-from sqlalchemy import Column, Integer, String, Table, ForeignKey
+from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
 from .base import Base
-from .book import Book
-
-
-association_table = Table('books_categories', Base.metadata,
-    Column('book_id', Integer, ForeignKey('books.id')),
-    Column('category_id', Integer, ForeignKey('categories.id'))
-)
+from .associations import association_table
 
 
 class Category(Base):
@@ -16,15 +10,9 @@ class Category(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String)
 
-    books = relationship(
-        "Book",
+    items = relationship(
+        "Item",
         secondary=association_table,
-        back_populates="categories"
+        back_populates="categories",
+        lazy='joined'
     )
-
-
-Book.categories = relationship(
-    "Category",
-    secondary=association_table,
-    back_populates="books"
-)

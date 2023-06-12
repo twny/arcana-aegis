@@ -1,12 +1,11 @@
-from sqlalchemy import Column, Integer, String, Date, ForeignKey
+from sqlalchemy import Column, Integer, String, Date, Table, ForeignKey
 from sqlalchemy.orm import relationship
 from .base import Base
-from .author import Author
-from .publisher import Publisher
+from .associations import association_table
 
 
-class Book(Base):
-    __tablename__ = 'books'
+class Item(Base):
+    __tablename__ = 'items'
 
     id = Column(Integer, primary_key=True)
     title = Column(String)
@@ -14,6 +13,7 @@ class Book(Base):
     publisher_id = Column(Integer, ForeignKey('publishers.id'))
     publication_date = Column(Date)
     page_count = Column(Integer)
+    item_type = Column(String)  # new field
     file_format = Column(String)
     file_size = Column(Integer)
     file_location = Column(String)
@@ -23,5 +23,11 @@ class Book(Base):
     content_creator = Column(String)
     encoding_software = Column(String)
 
-    author = relationship("Author", back_populates="books")
-    publisher = relationship("Publisher", back_populates="books")
+    author = relationship("Author", back_populates="items")
+    publisher = relationship("Publisher", back_populates="items")
+    categories = relationship(
+        "Category",
+        secondary=association_table,
+        back_populates="items",
+        lazy='joined'
+    )
