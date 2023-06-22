@@ -5,9 +5,19 @@ A Library of Rare Books
 ## Introduction
 
 The Arcana Aegis is a project dedicated to organizing and preserving a digital
-library of rare and unique media. The library was discovered on the internet
-and downloaded, as documented in this
-[tweet](https://twitter.com/tawnniee/status/1665973663546613762?s=20).
+library of rare and unique media. The library, sourced from a collection
+discovered on the internet, holds immense value for researchers, historians,
+educators, and the general public. By making this collection accessible and
+searchable, Arcana Aegis aims to support scholarly work and knowledge
+dissemination.
+
+### Scope
+
+The outcome of this project is to create a digital library framework with a
+running web application built using it. This web application aims to serve a
+diverse audience including researchers, students, and the general public. The
+backend server will use a RESTful API, GRPC, or GraphQL query interface for a
+database that models disparate entities forming the library.
 
 ## Current State of the Collection
 
@@ -18,6 +28,15 @@ The library, in its current state, presents a few challenges:
 * **Inconsistent curation**: File names across the library are inconsistent,
   and there are cases of missing metadata. Some of the media files are also in
   outdated or bespoke formats.
+* **Scanned books with archaic scripts**: A significant portion of the books
+  consists of scanned images packaged as PDFs. The text in these images is
+  often handwritten, utilizing archaic scripts and pictographs, which makes
+  Optical Character Recognition (OCR) impractical.
+* **Uncertain copyright status**: The legalities surrounding the public
+  distribution of the materials in the library are not well-defined.
+  Determining the copyright status of these rare and old texts is a complex
+  task, which raises concerns regarding the library's compliance with copyright
+  laws and regulations.
 
 ## Future Goals
 
@@ -74,42 +93,100 @@ Stay tuned for updates on these tasks as the project progresses. We look
 forward to sharing this incredible collection with the world!
 
 ## Data Modeling
+We employ state-of-the-art practices in library science for data modeling. One
+key component is BIBFRAME (Bibliographic Framework), which is a data model for
+bibliographic description. BIBFRAME is aimed at replacing the MARC standards
+and uses linked data principles to make bibliographic data more useful both
+within and outside the library community. See:
+[BIBFRAME](https://www.loc.gov/bibframe), [LOC
+Standards](https://www.loc.gov/standards/standard.html), [Bibliographic
+Metadata](https://www.loc.gov/standards/metadata.html)
 
-The Library of Congress has a proposed model named [BIBFRAME](https://www.loc.gov/bibframe/docs/bibframe2-model.html).
+**Categorization**
+* [Cutter Table](https://www.loc.gov/aba/pcc/053/table.html)
+* [LCC - Library of Congress Classification](https://en.wikipedia.org/wiki/Library_of_Congress_Classification)
+* [LCSH - Library of Congress Subject Headings](https://www.loc.gov/aba/publications/FreeLCSH/freelcsh.html)
 
-BIBFRAME 2.0 organizes this information into three core levels of abstraction: Work, Instance, and Item.
+**Linked Data**
+* [N-Triples](https://en.wikipedia.org/wiki/N-Triples)
+* [RDF/XML](https://en.wikipedia.org/wiki/RDF/XML)
+* [Turtle](https://en.wikipedia.org/wiki/Turtle_(syntax))
+* [JSON-LD](https://en.wikipedia.org/wiki/JSON-LD)
 
-* Work.  The highest level of abstraction, a Work, in the BIBFRAME context,
-  reflects the conceptual essence of the cataloged resource:  authors,
-  languages, and what it is about (subjects).
+Linked data formats are critical for ensuring interoperability and for linking
+our data with other libraries or external sources, thereby enhancing the
+richness and context of the information.
 
-* Instance.  A Work may have one or more individual, material embodiments, for
-  example, a particular published form. These are Instances of the Work.  An
-  Instance reflects information such as its publisher, place and date of
-  publication, and format.
 
-* Item.   An item is an actual copy (physical or electronic) of an Instance. It
-  reflects information such as its location (physical or virtual), shelf mark,
-  and barcode.
+### Challenges
+**Bibliographic Metadata**
+* Deep granularity and inconsistencies between resources, authors, media,
+  classification, and more.
 
-BIBFRAME 2.0 further defines additional key concepts that have relationships to the core classes:
+**Resource Types**
+* Books, video, images, music, meeting notes, and more. Each of these have
+  unique charactistics and thus metadata making a one-size-fits-all data model
+  difficult.
 
-* Agents:  Agents are people, organizations, jurisdictions, etc., associated
-  with a Work or Instance through roles such as author, editor, artist,
-  photographer, composer, illustrator, etc.
-* Subjects:  A Work might be “about” one or more concepts. Such a concept is
-  said to be a “subject” of the Work. Concepts that may be subjects include
-  topics, places, temporal expressions, events, works, instances, items,
-  agents, etc.
-* Events:  Occurrences, the recording of which may be the content of a Work.
+**Authority**
+* Consistently representing entities and their relationship to publisher,
+  author, language, makes modeling hard.
+
+**Multilingual & Scripts**
+* A data model that supports many languages for the same text or rare scripts
+  is critical and challenging. This includes dealing with issues such as
+  character encoding, right-to-left scripts, and linguistic variations.
+
+**Linked Data Formats**
+* Creating URI to link between external datasets or interally and maintainig
+  those linked relationships is non-trivial.
+
+**Integrity & Provenance**
+* Ensuring the integrity of the data and metadata, and maintaining a record of
+the origin and any changes made to each item in the collection. This is crucial
+for authenticity and reliability in a scholarly context.
+
+#### Vocabulary Control and Thesauri
+1. **Library of Congress Classification (LCC)** Ensuring notation used within
+   LCC is consistent and unambiguous
+
+1. **Cutter's Principles** A book number should be memorable, often involving
+   an abbreviated form of the authors name or title.
+
+1. **BIBFRAME with RDF/JSON-LD** URIs having consistent terms to denote entites
+   and relationships.
+
+1. **Thesauri** indexing around synonyms, hierarchical relationships (broader
+   to narrower terms).
+
+1. **External Authority Data**: Integration with external authority files like
+   VIAF (Virtual International Authority File) for normalizing author names and
+   other entities.
+
+## What's Next?
+
+Beyond the immediate goals, Arcana Aegis aims to foster a community around this
+digital library. Future enhancements could include the integration of
+user-generated content, development of a recommendation system, collaboration
+with other libraries and archives for data exchange, and partnerships with
+educational institutions or organizations dedicated to historical preservation.
+
+## Contributing
+
+Arcana Aegis welcomes contributions from the community. Whether you are a
+developer, a librarian, or someone with a passion for preserving rare books,
+there are many ways to get involved. Contributions needed include expertise in
+cataloging, development, data cleaning, and more. Please refer to our
+contribution guidelines for more information. (TODO)
 
 ## Stats on the collection:
 
 NOTE: The following statistics were generated by a Python script
-(`scripts/count_file_types.py`). Due to the library's lack of meticulous curation
-and the presence of unusual file names, some of these statistics may not be
-entirely accurate. They represent our best effort at comprehending the wide
-variety of contents within the library.
+(`scripts/count_file_types.py`). Due to the library's lack of meticulous
+curation and the presence of unusual file names, some of these statistics may
+not be entirely accurate. They represent our best effort at comprehending the
+wide variety of contents within the library. These statistics will be updated
+as the library is further curated and organized.
 
 ```sh
 Total files: 14777
